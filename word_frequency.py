@@ -1,25 +1,40 @@
+from string import punctuation
+
 STOP_WORDS = [
     'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from', 'has',
     'he', 'i', 'in', 'is', 'it', 'its', 'of', 'on', 'that', 'the', 'to',
     'were', 'will', 'with'
 ]
 
+def ispunct(s):
+    '''
+    test whether a string is a string of punctuation characters.
+    '''
+    if s == "":
+        return False
+    for c in s:
+        if c not in punctuation:
+            return False
+        
+    return True
 
 class FileReader:
     def __init__(self, filename):
-        pass
+        self.filename = filename
+        
 
     def read_contents(self):
         """
         This should read all the contents of the file
         and return them as one string.
         """
-        raise NotImplementedError("FileReader.read_contents")
+        with open(self.filename) as wordfile:
+            return wordsfile.read()
 
 
 class WordList:
     def __init__(self, text):
-        pass
+        self.text = text
 
     def extract_words(self):
         """
@@ -27,14 +42,21 @@ class WordList:
         is responsible for lowercasing all words and stripping
         them of punctuation.
         """
-        raise NotImplementedError("WordList.extract_words")
+        filtered_text = self.text.lower()
+
+        for p in punctuation:
+            filtered_text = filtered_text.replace(p, '')
+        
+        self.extract_words = filtered_text.split()
 
     def remove_stop_words(self):
         """
         Removes all stop words from our word list. Expected to
         be run after extract_words.
         """
-        raise NotImplementedError("WordList.remove_stop_words")
+        for stop_words in STOP_WORDS:
+            while stop_words in self.words_list:
+                self.words_list.remove(stop_words)
 
     def get_freqs(self):
         """
@@ -43,8 +65,14 @@ class WordList:
         extract_words and remove_stop_words. The data structure
         could be a dictionary or another type of object.
         """
-        raise NotImplementedError("WordList.get_freqs")
+        for w in self.wordlist:
+            if w in self.word_count:
+                self.word_count[w] += 1
+            else:
+                self.word_count[w] = 1
 
+            return self.word_count
+        
 
 class FreqPrinter:
     def __init__(self, freqs):
